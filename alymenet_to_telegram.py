@@ -93,6 +93,10 @@ def fetch_posts() -> list[dict[str, str]]:
         if not post_id:
             continue
 
+        # تجاهل منشورات الاستطلاع وعدم تحويلها إلى رسالة نصية.
+        if wrap.select_one(".tgme_widget_message_poll"):
+            continue
+
         text = extract_message_text(text_node) if text_node else ""
         url = post_link.get("href", f"https://t.me/{SOURCE_USERNAME}/{post_id}")
         media_url = ""
