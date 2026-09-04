@@ -113,9 +113,11 @@ def fetch_posts() -> list[dict[str, str]]:
                 media_url = candidate
                 media_type = "video"
 
-        # للمنشورات التي تحتوي وسائط فقط نستخدم وصفًا مختصرًا.
+        # تجاهل النشرة اليومية والمنشورات التي لا تحتوي نصًا قابلًا للاستخراج.
+        if text.startswith("📰 النَّشْرَةُ الإِخْبَارِيَّةُ الشَّامِلَةُ"):
+            continue
         if not text:
-            text = "منشور جديد من قناة رويترز بالعربية"
+            continue
 
         posts.append({
             # معرّف منشور Telegram ثابت؛ نستخدمه حتى لا تعاد منشورات السجل القديم.
