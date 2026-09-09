@@ -23,6 +23,12 @@ HISTORY_FILE = Path(os.environ.get("HISTORY_FILE", "reuters_ar_history.json"))
 MAX_HISTORY = 1000
 TIMEOUT = 30
 
+# لا تنشر أي منشور يذكر قناة اليمن نت أو يضع رابطها.
+BLOCKED_CHANNEL_NAME_RE = re.compile(r"اليمن[\s\u200c\u200d]*نت", re.IGNORECASE)
+BLOCKED_CHANNEL_URL_RE = re.compile(
+    r"(?:https?://)?t\.me/(?:s/)?ALYMENET(?:[/?#\s]|$)", re.IGNORECASE
+)
+
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; ReutersArPublisher/1.0; +https://t.me/reuters_Ar)"
 }
@@ -75,6 +81,14 @@ def extract_message_text(text_node) -> str:
     return clean_text(text_node.get_text("", strip=False))
 
 
+def is_blocked_post(text: str) -> bool:
+    """يتحقق من احتواء النص على اسم قناة اليمن نت أو رابطها."""
+    return bool(
+        BLOCKED_CHANNEL_NAME_RE.search(text)
+        or BLOCKED_CHANNEL_URL_RE.search(text)
+    )
+
+
 def fetch_posts() -> list[dict[str, str]]:
     response = requests.get(SOURCE_URL, headers=HEADERS, timeout=TIMEOUT)
     response.raise_for_status()
@@ -122,6 +136,9 @@ def fetch_posts() -> list[dict[str, str]]:
             continue
         if not text:
             continue
+        if is_blocked_post(text):
+            print(f"تم حظر منشور {post_id} لاحتوائه على اسم أو رابط قناة اليمن نت.")
+            continue
 
         posts.append({
             # معرّف منشور Telegram ثابت؛ نستخدمه حتى لا تعاد منشورات السجل القديم.
@@ -153,6 +170,11 @@ def format_message(post: dict[str, str]) -> str:
 
 
 def send_to_telegram(post: dict[str, str]) -> bool:
+    # حماية نهائية تمنع الإرسال حتى إذا وصل المنشور إلى هنا من مسار آخر.
+    if is_blocked_post(post.get("text", "")):
+        print(f"تم منع إرسال المنشور {post.get('id', '')} لاحتوائه على قناة اليمن نت.")
+        return False
+
     message = format_message(post)
     media_url = post.get("media_url", "")
     media_type = post.get("media_type", "")
