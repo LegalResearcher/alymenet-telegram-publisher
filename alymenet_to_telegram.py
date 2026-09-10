@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""نشر منشورات قناة Telegram العامة @reuters_Ar إلى قناة أخرى عبر Bot API.
+"""نشر منشورات قناة Telegram العامة @newsyemn إلى قناة أخرى عبر Bot API.
 
 لا يستخدم Userbot: يقرأ صفحة المعاينة العامة t.me/s ثم ينشر النص والوسائط المتاحة.
 """
@@ -15,7 +15,7 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
-SOURCE_USERNAME = "reuters_Ar"
+SOURCE_USERNAME = "newsyemn"
 SOURCE_URL = f"https://t.me/s/{SOURCE_USERNAME}"
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 DESTINATION = os.environ["TELEGRAM_CHANNEL_ID"]
@@ -30,7 +30,7 @@ BLOCKED_CHANNEL_URL_RE = re.compile(
 )
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; ReutersArPublisher/1.0; +https://t.me/reuters_Ar)"
+    "User-Agent": "Mozilla/5.0 (compatible; ReutersArPublisher/1.0; +https://t.me/newsyemn)"
 }
 
 
@@ -54,7 +54,7 @@ def save_history(history: set[str]) -> None:
 def clean_text(value: str) -> str:
     value = re.sub(
         r"(?:\n+ـ{5,})?\n*للاشتراك(?: بالقناة)? عبر تيليجرام:?\s*\n+"
-        r"https?://t\.me/reuters_Ar\S*.*$",
+        r"https?://t\.me/newsyemn\S*.*$",
         "",
         value,
         flags=re.IGNORECASE | re.DOTALL,
