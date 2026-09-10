@@ -68,6 +68,8 @@ def clean_text(value: str) -> str:
             break
         if re.search(r"(?:رويترز|Reuters)\s*[•·-]", stripped):
             break
+        if re.search(r"(?:^|[/@])newsyemn(?:[/\s]|$)", stripped, re.IGNORECASE):
+            continue
         if stripped.startswith("https://t.me/"):
             break
         lines.append(line)
