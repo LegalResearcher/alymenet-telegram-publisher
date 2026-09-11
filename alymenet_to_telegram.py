@@ -28,6 +28,14 @@ BLOCKED_CHANNEL_NAME_RE = re.compile(r"اليمن[\s\u200c\u200d]*نت", re.IGNO
 BLOCKED_CHANNEL_URL_RE = re.compile(
     r"(?:https?://)?t\.me/(?:s/)?ALYMENET(?:[/?#\s]|$)", re.IGNORECASE
 )
+EMOJI_RE = re.compile(
+    "["
+    "\U0001F1E6-\U0001F1FF"
+    "\U0001F300-\U0001FAFF"
+    "\U00002700-\U000027BF"
+    "\U00002600-\U000026FF"
+    "]+"
+)
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; ReutersArPublisher/1.0; +https://t.me/ALYMENET)"
@@ -52,6 +60,8 @@ def save_history(history: set[str]) -> None:
 
 
 def clean_text(value: str) -> str:
+    value = EMOJI_RE.sub("", value)
+    value = re.sub(r"[\uFE0E\uFE0F\u200D\u20E3]", "", value)
     value = re.sub(
         r"للاشتراك بقناة #اليمن_نت (?:تيليجرام|تليجرام)",
         "",
