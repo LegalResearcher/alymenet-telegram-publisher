@@ -62,6 +62,7 @@ def save_history(history: set[str]) -> None:
 def clean_text(value: str) -> str:
     value = EMOJI_RE.sub("", value)
     value = re.sub(r"[\uFE0E\uFE0F\u200D\u20E3]", "", value)
+    value = re.sub(r"[ \t]{2,}", " ", value)
     value = re.sub(
         r"للاشتراك بقناة #اليمن_نت (?:تيليجرام|تليجرام)",
         "",
