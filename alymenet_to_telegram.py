@@ -54,7 +54,7 @@ def save_history(history: set[str]) -> None:
 def clean_text(value: str) -> str:
     value = re.sub(
         r"للاشتراك بقناة #اليمن_نت (?:تيليجرام|تليجرام)",
-        "للاشتراك بقناة #حصاداليوم تليجرام",
+        "",
         value,
         flags=re.IGNORECASE,
     )
