@@ -59,6 +59,19 @@ def clean_text(value: str) -> str:
         flags=re.IGNORECASE,
     )
     value = re.sub(
+        r"للاشتراك بالقناة عبر (?:تيليجرام|تليجرام):?\s*"
+        r"(?:\n\s*)?https?://t\.me/\S+",
+        "",
+        value,
+        flags=re.IGNORECASE,
+    )
+    value = re.sub(
+        r"للاشتراك بالقناة عبر (?:تيليجرام|تليجرام):?",
+        "",
+        value,
+        flags=re.IGNORECASE,
+    )
+    value = re.sub(
         r"(?:\n+ـ{5,})?\n*للاشتراك(?: بالقناة)? عبر تيليجرام:?\s*\n+"
         r"https?://t\.me/newsyemn\S*.*$",
         "",
