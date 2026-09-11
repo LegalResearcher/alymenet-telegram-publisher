@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""نشر منشورات قناة Telegram العامة @newsyemn إلى قناة أخرى عبر Bot API.
+"""نشر منشورات قناة Telegram العامة @ALYMENET إلى قناة أخرى عبر Bot API.
 
 لا يستخدم Userbot: يقرأ صفحة المعاينة العامة t.me/s ثم ينشر النص والوسائط المتاحة.
 """
@@ -15,7 +15,7 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
-SOURCE_USERNAME = "newsyemn"
+SOURCE_USERNAME = "ALYMENET"
 SOURCE_URL = f"https://t.me/s/{SOURCE_USERNAME}"
 BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 DESTINATION = os.environ["TELEGRAM_CHANNEL_ID"]
@@ -30,7 +30,7 @@ BLOCKED_CHANNEL_URL_RE = re.compile(
 )
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; ReutersArPublisher/1.0; +https://t.me/newsyemn)"
+    "User-Agent": "Mozilla/5.0 (compatible; ReutersArPublisher/1.0; +https://t.me/ALYMENET)"
 }
 
 
@@ -68,7 +68,7 @@ def clean_text(value: str) -> str:
             break
         if re.search(r"(?:رويترز|Reuters)\s*[•·-]", stripped):
             break
-        if re.search(r"(?:^|[/@])newsyemn(?:[/\s]|$)", stripped, re.IGNORECASE):
+        if re.search(r"(?:^|[/@])ALYMENET(?:[/\s]|$)", stripped, re.IGNORECASE):
             continue
         if re.fullmatch(r"ـ{5,}", stripped):
             continue
