@@ -31,6 +31,10 @@ BLOCKED_CHANNEL_NAME_RE = re.compile(
 BLOCKED_CHANNEL_URL_RE = re.compile(
     r"(?:https?://)?t\.me/(?:s/)?ALYMENET(?:[/?#\s]|$)", re.IGNORECASE
 )
+# لا تنشر أي منشور يحتوي على عبارة حزام الأسد، مع السماح باختلاف الهمزة والفاصل.
+BLOCKED_PHRASE_RE = re.compile(
+    r"حزام[\s\u200b\u200c\u200d_ـ-]*ال[أا]سد", re.IGNORECASE
+)
 EMOJI_RE = re.compile(
     "["
     "\U0001F1E6-\U0001F1FF"
@@ -119,10 +123,11 @@ def extract_message_text(text_node) -> str:
 
 
 def is_blocked_post(text: str) -> bool:
-    """يتحقق من احتواء النص على اسم قناة اليمن نت أو رابطها."""
+    """يتحقق من احتواء النص على اسم القناة أو رابطها أو عبارة محظورة."""
     return bool(
         BLOCKED_CHANNEL_NAME_RE.search(text)
         or BLOCKED_CHANNEL_URL_RE.search(text)
+        or BLOCKED_PHRASE_RE.search(text)
     )
 
 
