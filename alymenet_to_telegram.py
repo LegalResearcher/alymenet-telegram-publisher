@@ -24,7 +24,10 @@ MAX_HISTORY = 1000
 TIMEOUT = 30
 
 # لا تنشر أي منشور يذكر قناة اليمن نت أو يضع رابطها.
-BLOCKED_CHANNEL_NAME_RE = re.compile(r"اليمن[\s\u200c\u200d]*نت", re.IGNORECASE)
+# يشمل ذلك الصيغ الشائعة مثل: اليمن نت، اليمن_نت، اليمن‌نت، واليمنـنت.
+BLOCKED_CHANNEL_NAME_RE = re.compile(
+    r"اليمن[\s\u200b\u200c\u200d_ـ-]*نت", re.IGNORECASE
+)
 BLOCKED_CHANNEL_URL_RE = re.compile(
     r"(?:https?://)?t\.me/(?:s/)?ALYMENET(?:[/?#\s]|$)", re.IGNORECASE
 )
